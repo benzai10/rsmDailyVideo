@@ -97,7 +97,11 @@ class DailyVideo extends Component {
 
     recordVideo = async function() {
 	if (this.camera) {
-	    const options = { maxDuration: 6, base64: true }
+	    const options = {
+		quality: 2,
+		maxDuration: 5,
+		base64: true
+	    }
 	    const data = await this.camera.recordAsync(options)
 	    console.log(data.uri)
 
@@ -107,16 +111,18 @@ class DailyVideo extends Component {
 	    let mime = 'video/mp4'
 	    fs.readFile(data.uri, 'base64')
 		.then((d) => {
+		    console.log("going to build the blog...")
 		    return Blob.build(d, { type: `${mime};BASE64` })
 		})
 		.then((blob) => {
 		    uploadBlob = blob
+		    console.log("going to upload...")
 		    return videoRef.put(blob, { contentType: mime })
 		})
 		.then(() => {
 		    Tts.speak('Video was saved in the cloud.')
 		    uploadBlob.close()
-		    return videoRef.getDownloadURL()
+//		    return videoRef.getDownloadURL()
 		})
 		.catch((error) => {
 		    console.log(error)
