@@ -3,6 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Card, CardSection, Button } from './common';
 import RNFetchBlob from 'react-native-fetch-blob';
+import Tts from 'react-native-tts';
 
 const Fetch = RNFetchBlob.polyfill.Fetch
 // replace built-in fetch
@@ -32,11 +33,12 @@ class Quote extends Component {
     }
 
     componentDidMount() {
-	return fetch('https://facebook.github.io/react-native/movies.json')
+	return fetch('http://quotes.rest/qod.json')
 	    .then((response) => response.json())
 	    .then((responseJson) => {
 		console.log(responseJson)
-		this.setState({ quote: 'Movie data received' })
+		this.setState({ quote: responseJson.contents.quotes[0].quote })
+		Tts.speak(responseJson.contents.quotes[0].quote)
 		return responseJson
 	    })
 
