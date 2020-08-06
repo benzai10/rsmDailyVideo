@@ -7,27 +7,27 @@ import reducers from './reducers';
 import Router from './Router';
 
 class App extends Component {
-    componentWillMount() {
-	const config = {
-	    apiKey: 'AIzaSyCsipqHe7NYeFHHtA8C1w0yhBCLSLd20Ew',
-	    authDomain: 'rocky-station-apps.firebaseapp.com',
-	    databaseURL: 'https://rocky-station-apps.firebaseio.com',
-	    projectId: 'rocky-station-apps',
-	    storageBucket: 'rocky-station-apps.appspot.com',
-	    messagingSenderId: '209506072799'
-	};
-	firebase.initializeApp(config);
-    }
+  componentWillMount() {
+    const config = {
+      apiKey: API_KEY,
+      authDomain: AUTH_DOMAIN,
+      databaseURL: DATABASE_URL,
+      projectId: PROJECT_ID,
+      storageBucket: STORAGE_BUCKET,
+      messagingSenderId: MESSAGING_SENDER_ID
+    };
+    firebase.initializeApp(config);
+  }
+  
+  render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
     
-    render() {
-	const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
-	
-	return (
-	    <Provider store={store}>
-	      <Router />
-	    </Provider>
-	)
-    }
+    return (
+      <Provider store={store}>
+	<Router />
+      </Provider>
+    )
+  }
 }
 
 export default App;
